@@ -1,5 +1,5 @@
 
-  
+/*
 setInterval(function() {
     $.get( "data.json", function( dataJson ) {
         console.log(dataJson)
@@ -16,7 +16,7 @@ setInterval(function() {
 
       });
 }, 1000);
-
+*/
 $( document ).ready(function() {
     var map = L.map('map', {zoomControl: false, dragging: false}).setView([51.505, -0.09], 13);
 
@@ -42,9 +42,8 @@ $( document ).ready(function() {
         var dataHtml = ""
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
-                dataHtml += "<p>" + key + " : " + data[key] + "</p>"
+                dataHtml += "<p>" + key.padEnd(7) + " : " + data[key] + "</p>"
                 
-               console.log(data[key]);
             }
          }
          $(".result").html(dataHtml);
@@ -56,7 +55,7 @@ $( document ).ready(function() {
     });
     
     // send a message over the WebSocket connection
-    socket.send('Hello, server!');
+    // socket.send('Hello, server!');
         
 
 })

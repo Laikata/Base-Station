@@ -16,11 +16,6 @@ data = {"lat":-1,
         "hum":-1,
         "heading":-1}
 
-async def sendWebsockets():
-    print("sending to", len(activeSockets), "sockets")
-    for sock in activeSockets:
-        
-        await sock.send(str(data))
 
 def serialListener():
     while True:
@@ -29,13 +24,23 @@ def serialListener():
         data["lat"] = random.random()
         asyncio.run(sendWebsockets())
 
+async def sendWebsockets():
+    print("sending to", len(activeSockets), "sockets")
+    for sock in activeSockets:
+        try:
+            await sock.send(str(data).replace("'", '"'))
+        except:
+            print("connection lost, removing socket")
+            activeSockets.remove(sock)
+
 async def handle_connection(websocket, path):
     activeSockets.append(websocket)
     print("WebSocket connection established and added to the list")
-    while websocket.open:
-        pass
-    print("websocket was closed")
-    activeSockets.remove(websocket)
+    # await websocket.send(str(data).replace("'", '"'))
+    
+    # print("websocket was closed")
+    # activeSockets.remove(websocket)
+    await asyncio.Future()
 
 async def websockets_server():
     print("starting websocket listener")
